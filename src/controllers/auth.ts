@@ -5,20 +5,21 @@ import bcrypt from "bcrypt";
 interface bodyType {
   fullName: String;
   email: String;
+  username: String;
   password: String;
-  userImage: String;
 }
 
 export const Register = async (req: Request, res: Response) => {
   try {
-    const { fullName, email, password, userImage }: bodyType = req.body;
+    const { fullName, email, username, password }: bodyType = req.body;
 
-    const user = await usersModel.findOne({ email });
+    const emailExist = await usersModel.findOne({ email });
+    const usernameExist = await usersModel.findOne({ username });
 
-    if (user)
+    if (emailExist || usernameExist)
       return res.status(409).json({
         code: 409,
-        message: "email has been registered",
+        message: emailExist ? "email has been registered" : "username already taken",
       });
 
     const passwordHash = await bcrypt.hash(password as string, 10);
@@ -26,9 +27,8 @@ export const Register = async (req: Request, res: Response) => {
     const users = await usersModel.create({
       fullName,
       email,
+      username,
       password: passwordHash,
-      userImage,
-      userStatus: "Active",
     });
 
     if (!users)
