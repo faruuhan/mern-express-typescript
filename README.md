@@ -1,4 +1,3 @@
-
 ## API Reference
 
 #### Auth Register
@@ -7,9 +6,10 @@
   POST /api/register
 ```
 
-| Parameter  | Type     | Description                |
-| :--------  | :------- | :------------------------- |
-| `fullName` | `string` | **Required**.              |
-| `email`    | `string` | **Required**.              |
-| `password` | `string` | **Required**.              |
-
+| Parameter         | Type     | Description   |
+| :---------------- | :------- | :------------ |
+| `fullName`        | `string` | **Required**. |
+| `email`           | `string` | **Required**. |
+| `username`        | `string` | **Required**. |
+| `password`        | `string` | **Required**. |
+| `confirmPassword` | `string` | **Required**. |
