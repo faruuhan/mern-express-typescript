@@ -19,3 +19,8 @@ export const registerSchema = [
     return true;
   }),
 ];
+
+export const loginSchema = [
+  body("username").exists({ checkFalsy: true }).withMessage("username is required"),
+  body("password").exists({ checkFalsy: true }).withMessage("password is required").isLength({ min: 8 }).withMessage("the password must be 8+ chars long and contain a number"),
+];
