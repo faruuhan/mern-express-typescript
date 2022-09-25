@@ -78,6 +78,10 @@ export const Login = async (req: Request, res: Response) => {
 };
 
 export const Me = async (req: Request, res: Response) => {
-  const me = await usersModel.findOne({ _id: req.user.user_id });
-  return res.status(200).json({ code: 200, message: me });
+  try {
+    const me = await usersModel.findOne({ _id: req.user.user_id });
+    return res.status(200).json({ code: 200, message: me });
+  } catch (error: any) {
+    return res.status(400).json({ code: 400, message: error.message });
+  }
 };
