@@ -1,12 +1,13 @@
 import { Response, Request } from "express";
 import usersModel from "./../models/users.model";
 import bcrypt from "bcrypt";
+import jwtController from "jsonwebtoken";
 
 interface bodyType {
-  fullName: String;
-  email: String;
-  username: String;
-  password: String;
+  fullName: string;
+  email: string;
+  username: string;
+  password: string;
 }
 
 export const Register = async (req: Request, res: Response) => {
@@ -47,4 +48,36 @@ export const Register = async (req: Request, res: Response) => {
       message: error.message,
     });
   }
+};
+
+export const Login = async (req: Request, res: Response) => {
+  try {
+    const { username, password }: bodyType = req.body;
+
+    const user = await usersModel.findOne({ username }).select("password");
+
+    if (user && (await bcrypt.compare(password, user.password as string))) {
+      const token = jwtController.sign({ user_id: user._id, username }, process.env.TOKEN_KEY as string, {
+        expiresIn: "120s",
+      });
+      return res.status(200).json({
+        code: 200,
+        token: token,
+      });
+    }
+    return res.status(400).json({
+      code: 400,
+      message: "email or password wrong",
+    });
+  } catch (error: any) {
+    return res.status(500).json({
+      code: 500,
+      message: error.message,
+    });
+  }
+};
+
+export const Me = async (req: Request, res: Response) => {
+  const me = await usersModel.findOne({ _id: req.user.user_id });
+  return res.status(200).json({ code: 200, message: me });
 };

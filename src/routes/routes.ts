@@ -4,11 +4,15 @@ import { BaseController } from "../controllers/BaseController";
 
 import { validateSchema, registerSchema } from "./../config/validate";
 
-import { Register } from "../controllers/auth";
+import { Register, Login, Me } from "../controllers/auth";
+
+import { Auth } from "../middleware/Authorization";
 
 router.get("/", BaseController);
 
 // auth routes
 router.post("/api/register", registerSchema, validateSchema, Register);
+router.post("/api/login", Login);
+router.get("/api/me", Auth, Me);
 
 export default router;
