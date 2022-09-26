@@ -14,15 +14,6 @@ export const Register = async (req: Request, res: Response) => {
   try {
     const { fullName, email, username, password }: bodyType = req.body;
 
-    const emailExist = await usersModel.findOne({ email });
-    const usernameExist = await usersModel.findOne({ username });
-
-    if (emailExist || usernameExist)
-      return res.status(409).json({
-        code: 409,
-        message: emailExist ? "email has been registered" : "username already taken",
-      });
-
     const passwordHash = await bcrypt.hash(password as string, 10);
 
     const users = await usersModel.create({
@@ -32,21 +23,12 @@ export const Register = async (req: Request, res: Response) => {
       password: passwordHash,
     });
 
-    if (!users)
-      return res.status(400).json({
-        code: 400,
-        message: "register unsuccessfuly",
-      });
-
     return res.status(200).json({
       code: 200,
       message: "register successfuly",
     });
   } catch (error: any) {
-    return res.status(500).json({
-      code: 500,
-      message: error.message,
-    });
+    return res.status(500).json({ code: 500, message: error.code == 11000 ? Object.keys(error.keyValue)[0] + " has been taken" : error.message });
   }
 };
 
@@ -58,7 +40,7 @@ export const Login = async (req: Request, res: Response) => {
 
     if (user && (await bcrypt.compare(password, user.password as string))) {
       const token = jwtController.sign({ user_id: user._id, username }, process.env.TOKEN_KEY as string, {
-        expiresIn: "120s",
+        expiresIn: "2h",
       });
       return res.status(200).json({
         code: 200,
@@ -79,8 +61,7 @@ export const Login = async (req: Request, res: Response) => {
 
 export const Me = async (req: Request, res: Response) => {
   try {
-    const me = await usersModel.findOne({ _id: req.user.user_id });
-    return res.status(200).json({ code: 200, message: me });
+    return res.status(200).json({ code: 200, data: req.user });
   } catch (error: any) {
     return res.status(400).json({ code: 400, message: error.message });
   }
