@@ -41,3 +41,16 @@
 | `userStatus` | `string`   |             |
 | `created_at` | `datetime` |             |
 | `updated_at` | `datetime` |             |
+
+#### Update User
+
+```http
+  POST /api/user
+```
+
+| Parameter   | Type     | Description   |
+| :---------- | :------- | :------------ |
+| `fullName`  | `string` | **Required**. |
+| `email `    | `string` | **Required**. |
+| `username`  | `string` | **Required**. |
+| `userImage` | `string` | **Required**. |

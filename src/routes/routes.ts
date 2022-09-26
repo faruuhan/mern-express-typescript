@@ -1,5 +1,4 @@
 import express from "express";
-import fileUpload from "express-fileupload";
 const upload = require("../config/multer");
 const router = express();
 
