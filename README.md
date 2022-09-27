@@ -33,7 +33,7 @@
 
 | Parameter    | Type       | Description |
 | :----------- | :--------- | :---------- |
-| `_id_`       | `string`   |             |
+| `_id`        | `string`   |             |
 | `fullName`   | `string`   |             |
 | `email `     | `string`   |             |
 | `username`   | `string`   |             |
@@ -53,4 +53,4 @@
 | `fullName`  | `string` | **Required**. |
 | `email `    | `string` | **Required**. |
 | `username`  | `string` | **Required**. |
-| `userImage` | `file`   |               |
+| `userImage` | `file`   | **Optional**  |
