@@ -16,7 +16,7 @@ export const Register = async (req: Request, res: Response) => {
 
     const passwordHash = await bcrypt.hash(password as string, 10);
 
-    const users = await usersModel.create({
+    await usersModel.create({
       fullName,
       email,
       username,
@@ -47,6 +47,7 @@ export const Login = async (req: Request, res: Response) => {
         token: token,
       });
     }
+
     return res.status(400).json({
       code: 400,
       message: "email or password wrong",
