@@ -53,4 +53,4 @@
 | `fullName`  | `string` | **Required**. |
 | `email `    | `string` | **Required**. |
 | `username`  | `string` | **Required**. |
-| `userImage` | `string` | **Required**. |
+| `userImage` | `file`   |               |
