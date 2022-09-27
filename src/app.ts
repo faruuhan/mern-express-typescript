@@ -10,6 +10,7 @@ var corsOptions = {
   methods: ["GET", "POST", "DELETE", "PUT"],
 };
 
+app.use("/assets", express.static("assets"));
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
