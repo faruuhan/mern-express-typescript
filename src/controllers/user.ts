@@ -18,13 +18,13 @@ export const update = async (req: Request, res: Response) => {
     const user = await usersModel.findByIdAndUpdate({ _id: user_id }, data, { new: true });
 
     if (req.file) {
-      const imageType = req.file!.mimetype.split("/");
-      if (imageType[0] !== "image") {
+      const imageType = req.file.mimetype.split("/");
+      if (imageType[0] !== "image" || req.file.size > 1048576) {
         await fs.remove("src/temp/" + req.file?.filename);
-        return res.status(200).json({ code: 200, message: "failed update, file must image format such as jpeg, jpg, png" });
+        return res.status(200).json({ code: 200, message: imageType[0] !== "image" ? "failed update, file must image format such as jpeg, jpg, png" : "Size file can't more than 1024kb or 1mb" });
       }
       if (user) await savefile("assets", req.file?.filename + "." + imageType[1]);
-      await fs.remove("assets/" + req.user.userImage.split("/")[1]);
+      await fs.remove(req.user.userImage);
     }
 
     return res.status(200).json({ code: 200, message: "update succesfully" });
