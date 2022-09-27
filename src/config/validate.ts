@@ -24,3 +24,9 @@ export const loginSchema = [
   body("username").exists({ checkFalsy: true }).withMessage("username is required"),
   body("password").exists({ checkFalsy: true }).withMessage("password is required").isLength({ min: 8 }).withMessage("the password must be 8+ chars long and contain a number"),
 ];
+
+export const userUpdateSchema = [
+  body("fullName").exists({ checkFalsy: true }).withMessage("fullName is required"),
+  body("username").exists({ checkFalsy: true }).withMessage("username is required"),
+  body("email").exists({ checkFalsy: true }).withMessage("email is required").isEmail().withMessage("email invalid"),
+];

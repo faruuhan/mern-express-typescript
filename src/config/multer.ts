@@ -3,7 +3,7 @@ import { Request } from "express";
 
 const storage = multer.diskStorage({
   destination: function (req: Request, file: Express.Multer.File, cb: any) {
-    cb(null, "assets");
+    cb(null, "src/temp");
   },
   filename: function (req: Request, file: Express.Multer.File, cb: any) {
     const formatFile = file.originalname.split(".");

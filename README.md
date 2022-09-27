@@ -45,7 +45,7 @@
 #### Update User
 
 ```http
-  POST /api/user
+  PUT /api/user
 ```
 
 | Parameter   | Type     | Description   |
