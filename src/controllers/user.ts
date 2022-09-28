@@ -1,9 +1,10 @@
 import { Response, Request } from "express";
 import usersModel from "./../models/users.model";
 import { savefile } from "../config/savefile";
+import bcrypt from "bcrypt";
 import fs from "fs-extra";
 
-export const update = async (req: Request, res: Response) => {
+export const updateUser = async (req: Request, res: Response) => {
   try {
     const user_id = req.user._id;
     const { fullName, email, username } = req.body;
@@ -35,5 +36,20 @@ export const update = async (req: Request, res: Response) => {
   } catch (error: any) {
     if (error.code == 11000) await fs.remove("src/temp/" + req.file?.filename);
     return res.status(500).json({ code: 500, message: error.code == 11000 ? Object.keys(error.keyValue)[0] + " has been taken" : error.message });
+  }
+};
+
+export const changePassword = async (req: Request, res: Response) => {
+  try {
+    const user_id = req.user._id;
+    const { password } = req.body;
+
+    const passwordHash = await bcrypt.hash(password as string, 10);
+
+    await usersModel.findByIdAndUpdate({ _id: user_id }, { password: passwordHash }, { new: true });
+
+    return res.status(200).json({ code: 200, message: "update succesfully" });
+  } catch (error: any) {
+    return res.status(500).json({ code: 500, message: error.message });
   }
 };

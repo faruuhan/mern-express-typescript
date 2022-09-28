@@ -41,3 +41,11 @@ export const schemaUpdateUser = yup.object({
   username: yup.string().required(),
   email: yup.string().email().required(),
 });
+
+export const schemaChangePassword = yup.object({
+  password: yup.string().min(8).required(),
+  confirmPassword: yup
+    .string()
+    .min(8)
+    .oneOf([yup.ref("password"), null], "confrim password does't match"),
+});

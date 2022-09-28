@@ -6,11 +6,11 @@ import { Auth } from "../middleware/Authorization";
 
 import { BaseController } from "../controllers/BaseController";
 
-import { validation, schemaRegister, schemaLogin, schemaUpdateUser } from "../middleware/validate";
+import { validation, schemaRegister, schemaLogin, schemaUpdateUser, schemaChangePassword } from "../middleware/validate";
 
 import { Register, Login, Me } from "../controllers/auth";
 
-import { update } from "../controllers/user";
+import { updateUser, changePassword } from "../controllers/user";
 
 router.get("/", BaseController);
 
@@ -20,6 +20,7 @@ router.post("/api/login", validation(schemaLogin), Login);
 router.get("/api/me", Auth, Me);
 
 // user
-router.put("/api/user/", Auth, upload.single("userImage"), validation(schemaUpdateUser), update);
+router.put("/api/user/", Auth, upload.single("userImage"), validation(schemaUpdateUser), updateUser);
+router.put("/api/user/password", Auth, validation(schemaChangePassword), changePassword);
 
 export default router;
